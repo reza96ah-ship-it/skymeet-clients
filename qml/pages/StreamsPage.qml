@@ -7,6 +7,7 @@ import "../components"
 Rectangle {
     id: root
     property var api
+    property bool showCreateForm: false
     color: Style.background
 
     Flickable {
@@ -37,7 +38,13 @@ Rectangle {
                     font.weight: Font.Bold
                 }
                 AppButton {
-                    text: "Sync ZLM"
+                    text: root.showCreateForm ? "Close" : "+ Add"
+                    implicitHeight: 40
+                    variant: root.showCreateForm ? "secondary" : "primary"
+                    onClicked: root.showCreateForm = !root.showCreateForm
+                }
+                AppButton {
+                    text: "Sync"
                     implicitHeight: 40
                     variant: "secondary"
                     onClicked: api.syncZlmStreams()
@@ -51,8 +58,64 @@ Rectangle {
             }
 
             Card {
+                visible: !root.showCreateForm
                 Layout.fillWidth: true
-                Layout.preferredHeight: 330
+                Layout.preferredHeight: 92
+                radiusValue: 22
+
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: 16
+                    spacing: 12
+
+                    Rectangle {
+                        Layout.preferredWidth: 48
+                        Layout.preferredHeight: 48
+                        radius: 16
+                        color: Style.blueSoft
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: "+"
+                            color: Style.primary
+                            font.pixelSize: 26
+                            font.weight: Font.Bold
+                        }
+                    }
+
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 3
+
+                        Text {
+                            text: "Add a stream"
+                            color: Style.textPrimary
+                            font.family: Style.fontFamily
+                            font.pixelSize: 16
+                            font.weight: Font.Bold
+                        }
+
+                        Text {
+                            text: "Create meeting/live or sync active ZLMediaKit streams."
+                            color: Style.textSecondary
+                            font.family: Style.fontFamily
+                            font.pixelSize: 12
+                            wrapMode: Text.WordWrap
+                        }
+                    }
+
+                    AppButton {
+                        text: "+ Add Stream"
+                        implicitHeight: 42
+                        onClicked: root.showCreateForm = true
+                    }
+                }
+            }
+
+            Card {
+                visible: root.showCreateForm
+                Layout.fillWidth: true
+                Layout.preferredHeight: 360
                 radiusValue: 24
 
                 ColumnLayout {
@@ -60,17 +123,28 @@ Rectangle {
                     anchors.margins: 16
                     spacing: 10
 
-                    Text {
-                        text: "Create stream"
-                        color: Style.textPrimary
-                        font.family: Style.fontFamily
-                        font.pixelSize: 18
-                        font.weight: Font.Bold
+                    RowLayout {
+                        Layout.fillWidth: true
+
+                        Text {
+                            Layout.fillWidth: true
+                            text: "Create stream"
+                            color: Style.textPrimary
+                            font.family: Style.fontFamily
+                            font.pixelSize: 18
+                            font.weight: Font.Bold
+                        }
+
+                        AppButton {
+                            text: "Add Stream"
+                            implicitHeight: 38
+                            onClicked: api.createStream(streamName.text, appName.text, streamKey.text, sourceType.text, sourceUrl.text, protocol.text)
+                        }
                     }
 
                     Text {
                         Layout.fillWidth: true
-                        text: "For rtsp://127.0.0.1/meeting/live, use app = meeting and stream = live."
+                        text: "For your RTSP path rtsp://127.0.0.1/meeting/live, use app = meeting and stream = live."
                         color: Style.textSecondary
                         font.family: Style.fontFamily
                         font.pixelSize: 12
@@ -136,7 +210,7 @@ Rectangle {
                         spacing: 10
                         AppButton {
                             Layout.fillWidth: true
-                            text: "Create Stream"
+                            text: "+ Add Stream"
                             onClicked: api.createStream(streamName.text, appName.text, streamKey.text, sourceType.text, sourceUrl.text, protocol.text)
                         }
                         AppButton {
@@ -188,7 +262,7 @@ Rectangle {
             Text {
                 visible: api.streams.length === 0
                 Layout.fillWidth: true
-                text: "No streams yet. Create meeting/live above, or start/push a stream in ZLMediaKit and press Sync ZLM."
+                text: "No streams yet. Press + Add Stream above, or start/push a stream in ZLMediaKit and press Sync."
                 color: Style.textSecondary
                 font.family: Style.fontFamily
                 font.pixelSize: 14
