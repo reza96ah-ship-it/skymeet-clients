@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/Main.qml</file>
+        <file>qml/qmldir</file>
+        <file>qml/Style.qml</file>
+        <file>qml/components/AppButton.qml</file>
+        <file>qml/components/Card.qml</file>
+        <file>qml/components/InputField.qml</file>
+        <file>qml/components/Toast.qml</file>
+        <file>qml/components/TabButton.qml</file>
+        <file>qml/pages/LoginPage.qml</file>
+        <file>qml/pages/HomePage.qml</file>
+        <file>qml/pages/SessionsPage.qml</file>
+        <file>qml/pages/UsersPage.qml</file>
+        <file>qml/pages/StreamsPage.qml</file>
+        <file>qml/pages/SettingsPage.qml</file>
+    </qresource>
+</RCC>
